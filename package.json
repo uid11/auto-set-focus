@@ -1,0 +1,16 @@
+{
+  "name": "set-focus",
+  "version": "0.0.1",
+  "description": "Browser script for autosetting focus in some elements on pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "auto",
+    "set",
+    "focus"
+  ],
+  "author": "uid11",
+  "license": "MIT"
+}
