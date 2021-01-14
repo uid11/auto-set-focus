@@ -1,15 +1,13 @@
 let setFocus = (element = $0) => {
-    if (!element) {
-        console.log('Element is falsy');
+    if (!element || typeof element.focus !== 'function') {
+        console.log('Not a control DOM element: ', element);
         return;
     }
 
-    const hasCorrectFocus = () => document.hasFocus() && document.activeElement === element;
-
-    window.addEventListener('keydown', () => {
-        if (hasCorrectFocus()) {
-            return;
-        }
+    window.addEventListener('keydown', event => {
+        if (typeof event.key !== 'string' || event.key.length !== 1) return;
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (document.hasFocus()) return;
 
         element.value = '';
         element.focus();
