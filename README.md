@@ -1,8 +1,8 @@
-# Set focuse
+# auto-set-focus
 
 [![License MIT][license-image]](LICENSE)
 
-Browser script for autosetting focus in some elements on pages.
+Browser script for auto-setting focus on some element on page.
 
 ## License
 

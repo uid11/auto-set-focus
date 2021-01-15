@@ -1,17 +1,30 @@
-let setFocus = (element = $0) => {
+const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
     if (!element || typeof element.focus !== 'function') {
-        console.log('Not a control DOM element: ', element);
-        return;
+        globalThis.console?.log?.('Not a control DOM element:', element);
+
+        return () => {};
     }
 
-    window.addEventListener('keydown', event => {
+    const typeReg = /^(pa|te|da|em|nu|se|ti|ur)/;
+
+    const hasFocus = () => {
+        const { readOnly, type } = globalThis?.document?.activeElement ?? {};
+
+        return readOnly !== true && typeReg.test(type);
+    };
+
+    const listener = event => {
         if (typeof event.key !== 'string' || event.key.length !== 1) return;
         if (event.altKey || event.ctrlKey || event.metaKey) return;
-        if (document.hasFocus()) return;
+        if (hasFocus()) return;
 
         element.value = '';
         element.focus();
-    });
+    };
+
+    globalThis.addEventListener?.('keydown', listener);
+
+    return () => globalThis.removeEventListener?.('keydown', listener);
 };
 
-export default setFocus;
+export default autoSetFocus;
