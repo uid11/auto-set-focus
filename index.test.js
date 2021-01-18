@@ -1,10 +1,14 @@
 import autoSetFocus from './index.js';
 
-console.log('\x1b[33mRun tests for autoSetFocus...\x1b[0m');
+console.log('\x1b[33m Run tests for autoSetFocus\n\x1b[0m');
 
 const it = (name, test) => {
-    test();
-    console.log(`${name}:`, '\x1b[32mok\x1b[0m');
+    try {
+        test();
+        console.log(`\n\x1b[1m${name}\x1b[0m -> \x1b[32m ok\x1b[0m`);
+    } catch (error) {
+        console.log(`\n\x1b[1m${name}\x1b[0m -> \x1b[31m fail\x1b[0m\n${error}`);
+    }
 };
 
 it('do not throw without element', () => {
@@ -13,6 +17,7 @@ it('do not throw without element', () => {
 
 it('add correct listener', () => {
     let count = 0;
+
     globalThis.addEventListener = (type, listener) => {
         listener({});
         count += 1;
@@ -21,7 +26,7 @@ it('add correct listener', () => {
     autoSetFocus({ focus() {} });
     delete globalThis.autoSetFocus;
 
-    if (count !== 1) throw new Error();
+    if (count !== 1) throw new Error(`Expect 1, but got ${count}`);
 });
 
 it('return correct dispose function', () => {

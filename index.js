@@ -8,7 +8,7 @@ const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
     const typeReg = /^(pa|te|da|em|nu|se|ti|ur)/;
 
     const hasFocus = () => {
-        const { readOnly, type } = globalThis?.document?.activeElement ?? {};
+        const { readOnly, type } = globalThis.document?.activeElement ?? {};
 
         return readOnly !== true && typeReg.test(type);
     };
