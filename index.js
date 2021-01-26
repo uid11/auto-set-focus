@@ -18,13 +18,8 @@ const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
         return readOnly !== true && typeReg.test(type);
     };
 
-    const focus = () => {
-        element.value = '';
-        element.focus();
-    };
-
     const visibilityListener = () => {
-        if (globalThis.document?.hidden === false) focus();
+        if (globalThis.document?.hidden === false) element.focus();
     };
 
     const keyListener = event => {
@@ -32,7 +27,8 @@ const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
         if (event.altKey || event.ctrlKey || event.metaKey) return;
         if (hasFocus()) return;
 
-        focus();
+        element.value = '';
+        element.focus();
     };
 
     globalThis.addEventListener?.('keydown', keyListener);
