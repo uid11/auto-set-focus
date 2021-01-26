@@ -1,3 +1,8 @@
+/**
+ * Switch on auto-setting focus to element when typing on keyboard.
+ * @param {HTMLInputElement | HTMLTextAreaElement} element - element where focus will be setted.
+ * @returns {() => void} - stop-function, that stop auto-setting of focus.
+ */
 const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
     if (!element || typeof element.focus !== 'function') {
         globalThis.console?.log?.('Not a control DOM element:', element);
@@ -13,18 +18,30 @@ const autoSetFocus = (element = typeof $0 !== 'undefined' && $0) => {
         return readOnly !== true && typeReg.test(type);
     };
 
-    const listener = event => {
-        if (typeof event.key !== 'string' || event.key.length !== 1) return;
-        if (event.altKey || event.ctrlKey || event.metaKey) return;
-        if (hasFocus()) return;
-
+    const focus = () => {
         element.value = '';
         element.focus();
     };
 
-    globalThis.addEventListener?.('keydown', listener);
+    const visibilityListener = () => {
+        if (globalThis.document?.hidden === false) focus();
+    };
 
-    return () => globalThis.removeEventListener?.('keydown', listener);
+    const keyListener = event => {
+        if (typeof event.key !== 'string' || event.key.length !== 1) return;
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (hasFocus()) return;
+
+        focus();
+    };
+
+    globalThis.addEventListener?.('keydown', keyListener);
+    globalThis.document?.addEventListener?.('visibilitychange', visibilityListener);
+
+    return () => {
+        globalThis.removeEventListener?.('keydown', keyListener);
+        globalThis.removeEventListener?.('visibilitychange', visibilityListener);
+    };
 };
 
 export default autoSetFocus;
